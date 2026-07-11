@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Patient Registration | MediCare{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+                
+                <!-- Card Header -->
+                <div class="bg-primary text-white py-4 px-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-person-plus-fill fs-2"></i>
+                        <div>
+                            <h3 class="fw-bold font-outfit mb-0">Patient Registration</h3>
+                            <p class="text-white-50 mb-0 small">Create your digital health portal account and clinical file in seconds.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <h5 class="fw-bold text-primary font-outfit mb-3 border-bottom pb-2"><i class="bi bi-key-fill me-2"></i>Portal Login Credentials</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12">
+                                {{ form.username|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.password|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.confirm_password|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-primary font-outfit mb-3 border-bottom pb-2"><i class="bi bi-file-earmark-medical me-2"></i>Clinical & Contact Information</h5>
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                {{ form.patient_name|as_crispy_field }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.patient_age|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.gender|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.blood_group|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.patient_email|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.patient_phone|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.address|as_crispy_field }}
+                            </div>
+                            <div class="col-12">
+                                {{ form.patient_problem|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold shadow-sm">Submit Registration</button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p class="small text-muted mb-0">Already registered? <a href="{% url 'accounts:login' %}" class="fw-semibold text-decoration-none">Sign in here</a></p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us | MediCare Hospital{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-5 bg-gradient-primary text-white text-center">
+    <div class="container py-3">
+        <h1 class="display-4 fw-bold font-outfit text-white">Contact MediCare</h1>
+        <p class="lead text-light-gray max-width-600 mx-auto mb-0">Reach our administration, paramedics, reception desk, or billing centers instantly.</p>
+    </div>
+</section>
+
+<div class="container my-5">
+    
+    <!-- Contact Info Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white hover-card">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-inline-flex mb-3 mx-auto">
+                    <i class="bi bi-telephone-fill fs-3"></i>
+                </div>
+                <h5 class="fw-bold font-outfit text-dark mb-1">Reception Desk</h5>
+                <p class="text-secondary small mb-0">+1 (555) 123-4567</p>
+                <small class="text-muted">General consulting queries</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white hover-card">
+                <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-3 d-inline-flex mb-3 mx-auto">
+                    <i class="bi bi-heart-pulse-fill fs-3"></i>
+                </div>
+                <h5 class="fw-bold font-outfit text-dark mb-1">Emergency Lines</h5>
+                <p class="text-danger fw-bold small mb-0">+1 (555) 999-8888</p>
+                <small class="text-muted">Parameadic dispatch 24/7</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white hover-card">
+                <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 d-inline-flex mb-3 mx-auto">
+                    <i class="bi bi-truck fs-3"></i>
+                </div>
+                <h5 class="fw-bold font-outfit text-dark mb-1">Ambulance Cell</h5>
+                <p class="text-secondary small mb-0">+1 (555) 321-7654</p>
+                <small class="text-muted">Cardiac and trauma transport</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white hover-card">
+                <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 d-inline-flex mb-3 mx-auto">
+                    <i class="bi bi-envelope-fill fs-3"></i>
+                </div>
+                <h5 class="fw-bold font-outfit text-dark mb-1">Support Email</h5>
+                <p class="text-secondary small mb-0">contact@medicare.com</p>
+                <small class="text-muted">Administrative replies within 12h</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form & Map Section -->
+    <div class="row g-5">
+        
+        <!-- Contact Form -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-4 p-md-5">
+                <div class="mb-4">
+                    <h3 class="fw-bold font-outfit text-dark mb-1">Get In Touch</h3>
+                    <p class="text-muted small">Have any questions? Leave us a message below.</p>
+                </div>
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold shadow-sm">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Google Map & Address -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                <div class="card-body p-0" style="height: 380px;">
+                    <!-- Embedded Google Map -->
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.1197637309995!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1025!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2ske!4v1689260000000!5m2!1sen!2ske" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <h5 class="fw-bold font-outfit text-dark mb-2"><i class="bi bi-geo-alt-fill text-primary me-2"></i>MediCare Headquarters</h5>
+                    <p class="text-secondary small mb-0">100 Medical Plaza, Healthcare City, New York, NY 10001</p>
+                    <small class="text-muted d-block mt-2">Valet parking is active at the executive lobby gate.</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

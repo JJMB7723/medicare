@@ -1,0 +1,137 @@
+/* Custom CSS for MediCare Hospital Management System */
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #0f172a;
+    --text-color: #334155;
+    --light-bg: #f8fafc;
+    --white: #ffffff;
+    --border-color: #e2e8f0;
+    --accent-red: #ef4444;
+    --accent-green: #22c55e;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6, .font-outfit {
+    font-family: 'Outfit', sans-serif;
+    color: var(--secondary-color);
+}
+
+.text-light-gray {
+    color: #cbd5e1 !important;
+}
+
+/* Card Hover Micro-Animations */
+.hover-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--border-color);
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    border-color: rgba(37, 99, 219, 0.2);
+}
+
+/* Hero Carousel Overlay and Typography */
+.carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.4));
+    z-index: 1;
+}
+.carousel-caption {
+    z-index: 2;
+    bottom: 25%;
+}
+
+/* Back to Top Button */
+#btn-back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+    z-index: 99;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in-out;
+}
+#btn-back-to-top:hover {
+    transform: scale(1.1);
+}
+
+/* Page Headers & Gradients */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+}
+
+.bg-gradient-dark {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Welcome counter items */
+.counter-box {
+    padding: 30px 20px;
+    border-radius: 12px;
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+/* Active links footer */
+.hover-link {
+    transition: color 0.2s ease-in-out;
+}
+.hover-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Glassmorphism sections */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Custom form container styles */
+.auth-container {
+    max-width: 480px;
+    margin: 80px auto;
+}
+
+/* Stats progress bars */
+.progress-bar-custom {
+    height: 8px;
+    border-radius: 4px;
+}
+
+/* Custom Scroll Animation Class */
+.fade-in-up {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,125 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
+    <div class="container">
+        <!-- Logo / Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'core:home' %}">
+            <i class="bi bi-heart-pulse-fill text-primary fs-3 me-2"></i>
+            <span class="fw-bold fs-4 text-dark font-outfit">Medi<span class="text-primary">Care</span></span>
+        </a>
+        
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-2 text-primary"></i>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Core Links -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                <li class="nav-item mx-2">
+                    <a class="nav-link text-dark fw-medium" href="{% url 'core:home' %}">Home</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link text-dark fw-medium" href="{% url 'core:about' %}">About Us</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link text-dark fw-medium" href="{% url 'departments:list' %}">Departments</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link text-dark fw-medium" href="{% url 'doctors:list' %}">Doctors</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link text-dark fw-medium" href="{% url 'contact:contact' %}">Contact</a>
+                </li>
+                
+                <!-- Separator (Desktop Only) -->
+                <li class="nav-item d-none d-lg-block mx-2 text-secondary opacity-50">|</li>
+                
+                <!-- Authentication & Role Scoped Menus -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown mx-2">
+                        <a class="nav-link dropdown-toggle text-primary fw-semibold d-flex align-items-center" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5 me-1"></i>
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg p-2" aria-labelledby="navbarUserDropdown">
+                            <li>
+                                <div class="dropdown-header text-muted border-bottom mb-2 pb-2">
+                                    <small>Logged in as</small><br>
+                                    <strong class="text-dark">{{ user.role }}</strong>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item rounded py-2" href="{% url 'accounts:dashboard' %}">
+                                    <i class="bi bi-grid-1x2-fill me-2 text-primary"></i>Dashboard
+                                </a>
+                            </li>
+                            
+                            {% if user.role == 'Patient' %}
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'appointments:book' %}">
+                                        <i class="bi bi-calendar-plus me-2 text-success"></i>Book Appointment
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'appointments:history' %}">
+                                        <i class="bi bi-clock-history me-2 text-info"></i>My History
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'medical_records:list' %}">
+                                        <i class="bi bi-file-earmark-medical me-2 text-warning"></i>My Medical Records
+                                    </a>
+                                </li>
+                            {% elif user.role == 'Doctor' %}
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'medical_records:add' %}">
+                                        <i class="bi bi-clipboard2-pulse me-2 text-success"></i>Add Medical Record
+                                    </a>
+                                </li>
+                            {% elif user.role in 'Admin,Receptionist' %}
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'appointments:list' %}">
+                                        <i class="bi bi-calendar3 me-2 text-danger"></i>Manage Appointments
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded py-2" href="{% url 'patients:list' %}">
+                                        <i class="bi bi-people-fill me-2 text-success"></i>Manage Patients
+                                    </a>
+                                </li>
+                                {% if user.role == 'Admin' %}
+                                    <li>
+                                        <a class="dropdown-item rounded py-2" href="{% url 'contact:messages_list' %}">
+                                            <i class="bi bi-chat-square-text me-2 text-info"></i>Contact Messages
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item rounded py-2" href="{% url 'accounts:password_change' %}">
+                                    <i class="bi bi-key me-2 text-secondary"></i>Change Password
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{% url 'accounts:logout' %}" method="post" class="d-inline w-100">
+                                    {% csrf_key = csrf_token %}
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item rounded py-2 text-danger border-0 bg-transparent w-100 text-start">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item mx-2">
+                        <a class="btn btn-outline-primary px-4 py-2 border-2 rounded-pill fw-semibold" href="{% url 'accounts:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item mx-2 mt-2 mt-lg-0">
+                        <a class="btn btn-primary px-4 py-2 rounded-pill fw-semibold shadow-sm text-white" href="{% url 'patients:register' %}">Register Now</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

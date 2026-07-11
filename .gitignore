@@ -1,0 +1,17 @@
+# Django .gitignore
+
+*.pyc
+__pycache__/
+db.sqlite3
+.env
+staticfiles/
+media/medical_reports/
+media/doctors/
+media/gallery/
+media/
+venv/
+.venv/
+.idea/
+.vscode/
+*.log
+.DS_Store

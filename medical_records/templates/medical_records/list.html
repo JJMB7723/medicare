@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Medical Records & Diagnoses | MediCare{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+        
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 border-bottom pb-3">
+            <div>
+                <h3 class="fw-bold font-outfit text-dark mb-1"><i class="bi bi-file-earmark-medical-fill text-success me-2"></i>Medical Records Index</h3>
+                <p class="text-muted small mb-0">Track clinical consult history, lab sheets, and prescription scripts.</p>
+            </div>
+            {% if user.role in 'Admin,Doctor' %}
+            <div>
+                <a href="{% url 'medical_records:add' %}" class="btn btn-success rounded-pill px-4 shadow-sm"><i class="bi bi-clipboard-plus-fill me-2"></i>Add Diagnosis Log</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        {% if user.role != 'Patient' %}
+                            <th>Patient</th>
+                        {% endif %}
+                        <th>Consulting Doctor</th>
+                        <th>Visit Date</th>
+                        <th>Diagnosis Summary</th>
+                        <th class="text-end">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if records %}
+                        {% for record in records %}
+                        <tr>
+                            {% if user.role != 'Patient' %}
+                                <td><strong class="text-dark">{{ record.patient.patient_name }}</strong></td>
+                            {% endif %}
+                            <td>
+                                <div>Dr. {{ record.doctor.doctor_name }}</div>
+                                <small class="text-muted">{{ record.doctor.department.department_name }}</small>
+                            </td>
+                            <td>{{ record.visit_date }}</td>
+                            <td class="text-dark fw-medium">{{ record.diagnosis|truncatechars:60 }}</td>
+                            <td class="text-end">
+                                <a href="{% url 'medical_records:detail' record.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">View Record</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-5">
+                                <i class="bi bi-file-earmark-x fs-1 mb-3"></i>
+                                <p class="lead mb-0">No medical records registered.</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

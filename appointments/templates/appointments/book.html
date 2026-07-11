@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Book Appointment | MediCare{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+                
+                <!-- Header -->
+                <div class="bg-primary text-white py-4 px-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-calendar-plus fs-2"></i>
+                        <div>
+                            <h3 class="fw-bold font-outfit mb-0">Book An Appointment</h3>
+                            <p class="text-white-50 mb-0 small">Select a specialty, choose your doctor, and pick an available date.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <!-- Department Field -->
+                            <div class="col-md-6">
+                                {{ form.department|as_crispy_field }}
+                            </div>
+
+                            <!-- Doctor Field (Custom rendering to support data-department attribute) -->
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="id_doctor" class="form-label requiredField">Doctor<span class="asteriskField">*</span></label>
+                                    <select name="doctor" id="id_doctor" class="form-select {% if form.doctor.errors %}is-invalid{% endif %}" required>
+                                        <option value="">-- Select Doctor --</option>
+                                        {% for doc in form.fields.doctor.queryset %}
+                                            <option value="{{ doc.id }}" data-department="{{ doc.department.id }}" {% if form.doctor.value|add:"0" == doc.id %}selected{% endif %}>
+                                                Dr. {{ doc.doctor_name }} ({{ doc.doctor_specialization }})
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if form.doctor.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.doctor.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Date Field -->
+                            <div class="col-md-6">
+                                {{ form.appointment_date|as_crispy_field }}
+                            </div>
+
+                            <!-- Time Field -->
+                            <div class="col-md-6">
+                                {{ form.appointment_time|as_crispy_field }}
+                            </div>
+
+                            <!-- Remarks Field -->
+                            <div class="col-12">
+                                {{ form.remarks|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-semibold shadow-sm">Submit Booking Request</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

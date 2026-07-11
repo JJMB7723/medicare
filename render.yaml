@@ -1,0 +1,42 @@
+databases:
+  - name: medicare-db
+    databaseName: medicare_db
+    user: medicare_user
+    plan: free
+
+services:
+  - type: web
+    name: medicare-hms
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn medicare.wsgi:application"
+    envVars:
+      - key: USE_MYSQL
+        value: "True"
+      - key: DB_NAME
+        fromDatabase:
+          name: medicare-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: medicare-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: medicare-db
+          property: password
+      - key: DB_HOST
+        fromDatabase:
+          name: medicare-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: medicare-db
+          property: port
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: SECRET_KEY
+        generateValue: true

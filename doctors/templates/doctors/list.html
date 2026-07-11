@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Medical Experts | MediCare{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="py-5 bg-gradient-primary text-white text-center">
+    <div class="container py-3">
+        <h1 class="display-4 fw-bold font-outfit text-white">Our Specialists</h1>
+        <p class="lead text-light-gray max-width-600 mx-auto mb-0">Consult with world-class clinical leaders, surgeons, and healthcare advisors.</p>
+    </div>
+</section>
+
+<div class="container my-5">
+    
+    <!-- Filter Bar & Admin Controls -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <!-- Department Filters -->
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'doctors:list' %}" class="btn btn-sm {% if not selected_dept %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-3">All Specialties</a>
+            {% for dept in departments %}
+                <a href="{% url 'doctors:list' %}?department={{ dept.id }}" class="btn btn-sm {% if selected_dept|add:"0" == dept.id %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-3">{{ dept.department_name }}</a>
+            {% endfor %}
+        </div>
+        
+        <!-- Add Doctor (Admin) -->
+        {% if user.role == 'Admin' %}
+        <div class="flex-shrink-0">
+            <a href="{% url 'doctors:add' %}" class="btn btn-primary rounded-pill px-4 shadow-sm"><i class="bi bi-person-plus-fill me-2"></i>Add Specialist</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Doctors Cards Grid -->
+    <div class="row g-4">
+        {% if doctors %}
+            {% for doc in doctors %}
+            <div class="col-lg-3 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white hover-card">
+                    <!-- Doctor Image -->
+                    <div style="height: 260px; overflow: hidden; position: relative;">
+                        {% if doc.doctor_image %}
+                            <img src="{{ doc.doctor_image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ doc.doctor_name }}">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600" class="w-100 h-100 object-fit-cover" alt="Doctor Placeholder">
+                        {% endif %}
+                        
+                        {% if user.role == 'Admin' %}
+                        <!-- Admin Floating Options -->
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <div class="dropdown">
+                                <button class="btn btn-white btn-sm rounded-circle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow p-2">
+                                    <li><a class="dropdown-item rounded" href="{% url 'doctors:edit' doc.id %}"><i class="bi bi-pencil me-2 text-primary"></i>Edit Profile</a></li>
+                                    <li><a class="dropdown-item rounded text-danger" href="{% url 'doctors:delete' doc.id %}"><i class="bi bi-trash me-2"></i>Delete Profile</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Doctor Body -->
+                    <div class="card-body p-4">
+                        <span class="badge bg-primary bg-opacity-10 text-primary mb-2">{{ doc.department.department_name }}</span>
+                        <h5 class="fw-bold font-outfit mb-1">Dr. {{ doc.doctor_name }}</h5>
+                        <p class="text-secondary small mb-2">{{ doc.doctor_specialization }}</p>
+                        <p class="text-muted small mb-0"><i class="bi bi-award text-primary me-1"></i>{{ doc.qualification }}</p>
+                        <p class="text-muted small mb-3"><i class="bi bi-briefcase text-primary me-1"></i>{{ doc.experience }} Years Experience</p>
+                        
+                        <div class="border-top pt-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <small class="text-muted d-block" style="font-size: 11px; text-uppercase: true;">Fee</small>
+                                <span class="fw-bold text-primary font-outfit fs-5">${{ doc.consultation_fee }}</span>
+                            </div>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'doctors:detail' doc.id %}" class="btn btn-light btn-sm rounded-circle" title="View Profile"><i class="bi bi-eye"></i></a>
+                                <a href="{% url 'appointments:book' %}" class="btn btn-primary btn-sm rounded-pill px-3">Book</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center text-muted py-5">
+                <i class="bi bi-people fs-1 mb-3"></i>
+                <p class="lead">No doctors found under this specialty. {% if user.role == 'Admin' %}Click "Add Specialist" to register.{% endif %}</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

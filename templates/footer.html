@@ -1,0 +1,83 @@
+<footer class="bg-dark text-white pt-5 pb-3 mt-auto">
+    <div class="container">
+        <div class="row g-4">
+            
+            <!-- Hospital Column -->
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-white mb-3 d-flex align-items-center">
+                    <i class="bi bi-heart-pulse-fill text-primary fs-4 me-2"></i>
+                    <span class="fw-bold font-outfit">MediCare</span>
+                </h5>
+                <p class="text-light-gray small">
+                    MediCare is a state-of-the-art enterprise-grade healthcare provider offering premium inpatient, outpatient, and emergency medical services.
+                </p>
+                <div class="d-flex gap-3 mt-4">
+                    <a href="#" class="text-white bg-secondary bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white bg-secondary bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-white bg-secondary bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white bg-secondary bg-opacity-25 rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <h6 class="text-uppercase fw-bold text-white mb-3 font-outfit">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{% url 'core:home' %}" class="text-light-gray text-decoration-none hover-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'core:about' %}" class="text-light-gray text-decoration-none hover-link">About Us</a></li>
+                    <li class="mb-2"><a href="{% url 'departments:list' %}" class="text-light-gray text-decoration-none hover-link">Departments</a></li>
+                    <li class="mb-2"><a href="{% url 'doctors:list' %}" class="text-light-gray text-decoration-none hover-link">Doctors</a></li>
+                    <li class="mb-2"><a href="{% url 'contact:contact' %}" class="text-light-gray text-decoration-none hover-link">Contact</a></li>
+                </ul>
+            </div>
+            
+            <!-- Departments Links -->
+            <div class="col-lg-2 col-md-6">
+                <h6 class="text-uppercase fw-bold text-white mb-3 font-outfit">Departments</h6>
+                <ul class="list-unstyled text-light-gray small">
+                    <li class="mb-2">Cardiology</li>
+                    <li class="mb-2">Neurology</li>
+                    <li class="mb-2">Pediatrics</li>
+                    <li class="mb-2">Orthopedics</li>
+                    <li class="mb-2">Oncology</li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="col-lg-4 col-md-6">
+                <h6 class="text-uppercase fw-bold text-white mb-3 font-outfit">Contact MediCare</h6>
+                <ul class="list-unstyled text-light-gray small">
+                    <li class="mb-3 d-flex align-items-start">
+                        <i class="bi bi-geo-alt-fill text-primary me-2 mt-1"></i>
+                        <span>100 Medical Plaza, Healthcare City, NY 10001</span>
+                    </li>
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bi bi-telephone-fill text-primary me-2"></i>
+                        <span>Reception: +1 (555) 123-4567</span>
+                    </li>
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bi bi-heart-fill text-danger me-2"></i>
+                        <span class="fw-semibold">Emergency: +1 (555) 999-8888</span>
+                    </li>
+                    <li class="mb-2 d-flex align-items-center">
+                        <i class="bi bi-envelope-fill text-primary me-2"></i>
+                        <span>contact@medicare-hospital.com</span>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+        
+        <hr class="my-4 bg-secondary">
+        
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0 text-light-gray small">&copy; {% id_year = 2026 %}2026 MediCare Hospital. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                <p class="mb-0 text-light-gray small">Designed with <i class="bi bi-heart-fill text-danger"></i> for Life.</p>
+            </div>
+        </div>
+        
+    </div>
+</footer>

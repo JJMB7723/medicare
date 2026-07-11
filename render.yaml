@@ -10,7 +10,7 @@ services:
     runtime: python
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn medicare.wsgi:application"
+    startCommand: "python manage.py migrate && gunicorn medicare.wsgi:application"
     envVars:
       - key: USE_MYSQL
         value: "True"

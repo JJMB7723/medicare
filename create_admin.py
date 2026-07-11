@@ -13,8 +13,19 @@ username = os.environ.get('SUPERUSER_USERNAME', 'admin')
 email = os.environ.get('SUPERUSER_EMAIL', 'admin@medicare-hospital.com')
 password = os.environ.get('SUPERUSER_PASSWORD', 'AdminPass123!')
 
-if not User.objects.filter(username=username).exists():
-    User.objects.create_superuser(username, email, password, role='Admin')
+# Retrieve or create user
+user, created = User.objects.get_or_create(username=username, defaults={'email': email})
+
+# Force password, role, and staff privileges
+user.set_password(password)
+user.role = 'Admin'
+user.is_staff = True
+user.is_superuser = True
+user.is_active = True
+user.save()
+
+if created:
     print(f"STATUS: Admin superuser '{username}' was successfully created.")
 else:
-    print(f"STATUS: Admin superuser '{username}' already exists in database.")
+    print(f"STATUS: Admin superuser '{username}' credentials were reset and updated.")
+

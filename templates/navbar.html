@@ -102,7 +102,6 @@
                             </li>
                             <li>
                                 <form action="{% url 'accounts:logout' %}" method="post" class="d-inline w-100">
-                                    {% csrf_key = csrf_token %}
                                     {% csrf_token %}
                                     <button type="submit" class="dropdown-item rounded py-2 text-danger border-0 bg-transparent w-100 text-start">
                                         <i class="bi bi-box-arrow-right me-2"></i>Sign Out

@@ -1,11 +1,9 @@
 from django.urls import path
 from . import views
 
-app_name = 'departments'
-
 urlpatterns = [
-    path('', views.DepartmentListView.as_view(), name='list'),
-    path('add/', views.DepartmentCreateView.as_view(), name='add'),
-    path('<int:pk>/edit/', views.DepartmentUpdateView.as_view(), name='edit'),
-    path('<int:pk>/delete/', views.DepartmentDeleteView.as_view(), name='delete'),
+    path('', views.department_list, name='department_list'),
+    path('add/', views.department_add, name='department_add'),
+    path('<int:pk>/edit/', views.department_edit, name='department_edit'),
+    path('<int:pk>/delete/', views.department_delete, name='department_delete'),
 ]

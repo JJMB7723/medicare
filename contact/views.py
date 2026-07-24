@@ -1,21 +1,26 @@
-from django.views.generic import CreateView, ListView
-from django.urls import reverse_lazy
-from django.contrib.messages.views import SuccessMessageMixin
-from accounts.mixins import AdminRequiredMixin
-from .models import ContactMessage
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from .forms import ContactForm
+from .models import ContactMessage
 
-class ContactView(SuccessMessageMixin, CreateView):
-    model = ContactMessage
-    form_class = ContactForm
-    template_name = 'contact/contact.html'
-    success_url = reverse_lazy('contact:contact')
-    success_message = "Your message was sent successfully! Our administrative team will reach out shortly."
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your message has been sent successfully. We will get back to you soon!")
+            return redirect('contact')
+        else:
+            messages.error(request, "Please correct the errors in the form.")
+    else:
+        form = ContactForm()
+    return render(request, 'contact/contact.html', {'form': form})
 
-
-class ContactMessagesListView(AdminRequiredMixin, ListView):
-    model = ContactMessage
-    template_name = 'contact/messages_list.html'
-    context_object_name = 'contact_messages'
-    ordering = ['-created_at']
-
+@login_required
+def message_list(request):
+    if not request.user.is_admin():
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+    messages_list = ContactMessage.objects.all().order_by('-created_at')
+    return render(request, 'contact/message_list.html', {'messages_list': messages_list})

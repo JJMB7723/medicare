@@ -7,10 +7,9 @@ class MedicalRecord(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='medical_records')
     diagnosis = models.TextField()
     prescription = models.TextField()
-    report_file = models.FileField(upload_to='medical_reports/', blank=True, null=True)
+    report_file = models.FileField(upload_to='medical_reports/', null=True, blank=True)
     visit_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Record for {self.patient.patient_name} - {self.diagnosis[:30]} ({self.visit_date})"
-
+        return f"Record for {self.patient.patient_name} - {self.visit_date}"

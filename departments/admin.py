@@ -6,4 +6,3 @@ class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('department_name', 'created_at', 'updated_at')
     search_fields = ('department_name', 'department_description')
     ordering = ('department_name',)
-

@@ -1,55 +1,77 @@
-from django.shortcuts import render, redirect
-from django.views.generic import FormView, ListView, UpdateView
-from django.urls import reverse_lazy
-from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login
-from django.contrib.messages.views import SuccessMessageMixin
-from accounts.models import User
-from accounts.mixins import ReceptionistOrAdminRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Patient
 from .forms import PatientRegistrationForm, PatientForm
 
-class PatientRegisterView(FormView):
-    template_name = 'patients/register.html'
-    form_class = PatientRegistrationForm
-    success_url = reverse_lazy('accounts:dashboard')
+@login_required
+def patient_list(request):
+    if request.user.role not in ('admin', 'doctor', 'receptionist'):
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+    patients = Patient.objects.all().order_by('-created_at')
+    return render(request, 'patients/patient_list.html', {'patients': patients})
 
-    def form_valid(self, form):
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        email = form.cleaned_data['patient_email']
+def patient_register(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        form = PatientRegistrationForm(request.POST)
+        if form.is_valid():
+            patient = form.save()
+            login(request, patient.user)
+            messages.success(request, f"Registration successful! Welcome to MediCare, {patient.patient_name}.")
+            return redirect('dashboard')
+        else:
+            messages.error(request, "Please correct the errors in the form.")
+    else:
+        form = PatientRegistrationForm()
+    return render(request, 'patients/patient_register.html', {'form': form})
 
-        # Create user account with Patient role
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            role='Patient'
-        )
+@login_required
+def patient_detail(request, pk):
+    patient = get_object_or_404(Patient, pk=pk)
+    if not request.user.is_admin() and not request.user.is_doctor() and not request.user.is_receptionist() and getattr(request.user, 'patient_profile', None) != patient:
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+    
+    appointments = patient.appointments.all().order_by('-appointment_date')
+    medical_records = patient.medical_records.all().order_by('-visit_date')
+    return render(request, 'patients/patient_detail.html', {
+        'patient': patient,
+        'appointments': appointments,
+        'medical_records': medical_records
+    })
 
-        # Create patient record linked to the user
-        patient = form.save(commit=False)
-        patient.user = user
-        patient.save()
+@login_required
+def patient_edit(request, pk):
+    patient = get_object_or_404(Patient, pk=pk)
+    if not request.user.is_admin() and not request.user.is_receptionist() and getattr(request.user, 'patient_profile', None) != patient:
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+        
+    if request.method == 'POST':
+        form = PatientForm(request.POST, instance=patient)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Patient details updated successfully.")
+            return redirect('patient_detail', pk=patient.pk)
+    else:
+        form = PatientForm(instance=patient)
+    return render(request, 'patients/patient_form.html', {'form': form, 'patient': patient})
 
-        # Automatically log the patient in
-        login(self.request, user)
-
-        messages.success(self.request, f"Welcome {patient.patient_name}! Your patient portal account has been registered successfully.")
-        return super().form_valid(form)
-
-
-class PatientListView(ReceptionistOrAdminRequiredMixin, ListView):
-    model = Patient
-    template_name = 'patients/list.html'
-    context_object_name = 'patients'
-    ordering = ['-created_at']
-
-
-class PatientUpdateView(ReceptionistOrAdminRequiredMixin, SuccessMessageMixin, UpdateView):
-    model = Patient
-    form_class = PatientForm
-    template_name = 'patients/form.html'
-    success_url = reverse_lazy('patients:list')
-    success_message = "Patient details updated successfully."
-
+@login_required
+def patient_delete(request, pk):
+    if not request.user.is_admin():
+        messages.error(request, "Access denied. Only administrators can delete records.")
+        return redirect('patient_list')
+    patient = get_object_or_404(Patient, pk=pk)
+    if request.method == 'POST':
+        if patient.user:
+            patient.user.delete()
+        else:
+            patient.delete()
+        messages.success(request, "Patient record and account deleted successfully.")
+        return redirect('patient_list')
+    return render(request, 'patients/patient_confirm_delete.html', {'patient': patient})

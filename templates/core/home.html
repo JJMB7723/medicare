@@ -1,0 +1,442 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<!-- 1. Hero Carousel Slider -->
+<div id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active hero-item" style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920');">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="container text-white">
+                    <div class="col-lg-7 animated-fade-in">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">EXCELLENT MEDICAL SERVICES</span>
+                        <h1 class="display-3 text-white mb-4">Your Health Is Our Top Priority</h1>
+                        <p class="fs-5 mb-5 opacity-90">Providing state-of-the-art diagnostic facilities and expert medical treatments with compassionate staff.</p>
+                        <div class="d-flex gap-3">
+                            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-lg rounded-pill px-4">Book Appointment</a>
+                            <a href="{% url 'doctor_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Find a Doctor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item hero-item" style="background-image: url('https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?q=80&w=1920');">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="container text-white">
+                    <div class="col-lg-7">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">LEADING MEDICAL SPECIALISTS</span>
+                        <h1 class="display-3 text-white mb-4">Consultation with Expert Doctors</h1>
+                        <p class="fs-5 mb-5 opacity-90">Schedule appointments with internationally board-certified specialists in Cardiology, Neurology, Pediatrics and more.</p>
+                        <div class="d-flex gap-3">
+                            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-lg rounded-pill px-4">Book Now</a>
+                            <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item hero-item" style="background-image: url('https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1920');">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="container text-white">
+                    <div class="col-lg-7">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">STATE-OF-THE-ART EQUIPMENT</span>
+                        <h1 class="display-3 text-white mb-4">Advanced Diagnostic Imaging</h1>
+                        <p class="fs-5 mb-5 opacity-90">Experience precise diagnoses with MRI, CT scan and pathology testing powered by modern medical engineering.</p>
+                        <div class="d-flex gap-3">
+                            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom btn-lg rounded-pill px-4">Book Scan</a>
+                            <a href="{% url 'department_list' %}" class="btn btn-outline-light btn-lg rounded-pill px-4">Departments</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- 2. Welcome & About Summary Section -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=600" class="img-fluid rounded-4 shadow-lg" alt="Medicare Hospital">
+                    <div class="position-absolute bottom-0 start-0 bg-primary text-white p-4 m-3 rounded-3 shadow d-none d-sm-block">
+                        <h4 class="mb-0 text-white">25+ Years</h4>
+                        <small>Of Clinical Excellence</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <span class="text-primary fw-bold text-uppercase">WELCOME TO MEDICARE</span>
+                <h2 class="display-5 mt-2 mb-4">A Modern Healthcare Network Dedicated to You</h2>
+                <p class="mb-4">At MediCare, we believe in patient-centric healing. We deliver holistic and compassionate care with a clinical structure focused on clinical excellence, innovation, and outstanding patient safety.</p>
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-patch-check-fill text-primary fs-4"></i>
+                            <span class="fw-semibold text-dark">Qualified Doctor Experts</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-patch-check-fill text-primary fs-4"></i>
+                            <span class="fw-semibold text-dark">Emergency Hotline 24/7</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-patch-check-fill text-primary fs-4"></i>
+                            <span class="fw-semibold text-dark">Modern Medical Equipment</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-patch-check-fill text-primary fs-4"></i>
+                            <span class="fw-semibold text-dark">Personalized Records</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'about' %}" class="btn btn-primary-custom px-4 rounded-pill">Discover More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Hospital Statistics Section -->
+<section class="py-5 bg-light stats-section">
+    <div class="container py-3">
+        <div class="row g-4 text-center">
+            <div class="col-md-3 col-sm-6">
+                <div class="counter-box">
+                    <div class="counter-icon"><i class="bi bi-people-fill"></i></div>
+                    <div class="counter-value" data-target="{{ stats.patients_count|default:1500 }}">{{ stats.patients_count|default:0 }}</div>
+                    <p class="mb-0 text-muted">Happy Patients</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="counter-box">
+                    <div class="counter-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <div class="counter-value" data-target="{{ stats.doctors_count|default:45 }}">{{ stats.doctors_count|default:0 }}</div>
+                    <p class="mb-0 text-muted">Expert Doctors</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="counter-box">
+                    <div class="counter-icon"><i class="bi bi-building"></i></div>
+                    <div class="counter-value" data-target="{{ stats.departments_count|default:12 }}">{{ stats.departments_count|default:0 }}</div>
+                    <p class="mb-0 text-muted">Clinical Departments</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="counter-box">
+                    <div class="counter-icon"><i class="bi bi-calendar-check"></i></div>
+                    <div class="counter-value" data-target="{{ stats.appointments_count|default:2400 }}">{{ stats.appointments_count|default:0 }}</div>
+                    <p class="mb-0 text-muted">Successful Bookings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4. Services Section -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase">OUR SERVICES</span>
+            <h2 class="display-6 mt-2">Comprehensive Clinical Departments</h2>
+            <p class="col-md-6 mx-auto mt-2">Providing high-standard treatment across multiple disciplines, tailored to heal your mind, body and soul.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="p-4 rounded-3 border bg-light h-100 hover-shadow transition">
+                    <div class="bg-primary text-white p-3 rounded d-inline-block mb-3 fs-3"><i class="bi bi-activity"></i></div>
+                    <h4>Diagnostic Labs</h4>
+                    <p>Accurate, rapid laboratory reports for biochemistry, pathology, hematology, and immunology testing.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="p-4 rounded-3 border bg-light h-100 hover-shadow transition">
+                    <div class="bg-primary text-white p-3 rounded d-inline-block mb-3 fs-3"><i class="bi bi-heart-fill"></i></div>
+                    <h4>Cardiology Unit</h4>
+                    <p>Preventive cardiological checkups, echocardiography, stress ECG, and advanced cardiac catheter labs.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="p-4 rounded-3 border bg-light h-100 hover-shadow transition">
+                    <div class="bg-primary text-white p-3 rounded d-inline-block mb-3 fs-3"><i class="bi bi-shield-plus"></i></div>
+                    <h4>Emergency ICU</h4>
+                    <p>Highly equipped intensive care units with round the clock ambulance services and critical trauma teams.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 5. Featured Departments Section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <span class="text-primary fw-bold text-uppercase">FEATURED DEPARTMENTS</span>
+                <h2 class="display-6 mt-2 mb-0">Our Clinical Excellence Centers</h2>
+            </div>
+            <a href="{% url 'department_list' %}" class="btn btn-outline-primary rounded-pill px-4">View All</a>
+        </div>
+        <div class="row g-4">
+            {% for dept in departments %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100 p-4 text-center">
+                        <div class="fs-1 text-primary mb-3"><i class="bi bi-hospital"></i></div>
+                        <h5 class="card-title">{{ dept.department_name }}</h5>
+                        <p class="card-text text-muted small mt-2">{{ dept.department_description|truncatewords:15 }}</p>
+                        <a href="{% url 'doctor_list' %}?department={{ dept.id }}" class="btn btn-sm btn-outline-primary mt-auto rounded-pill py-2">Consult Doctors</a>
+                    </div>
+                </div>
+            {% empty %}
+                <!-- Static Fallback cards if no db records yet -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100 p-4 text-center">
+                        <div class="fs-1 text-primary mb-3"><i class="bi bi-heart-pulse-fill"></i></div>
+                        <h5 class="card-title">Cardiology</h5>
+                        <p class="card-text text-muted small mt-2">Comprehensive health screening and cardiovascular therapies.</p>
+                        <a href="{% url 'department_list' %}" class="btn btn-sm btn-outline-primary mt-auto rounded-pill">View Info</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100 p-4 text-center">
+                        <div class="fs-1 text-primary mb-3"><i class="bi bi-brain-fill"></i></div>
+                        <h5 class="card-title">Neurology</h5>
+                        <p class="card-text text-muted small mt-2">Dedicated neurology clinical checkups and neuro-imaging services.</p>
+                        <a href="{% url 'department_list' %}" class="btn btn-sm btn-outline-primary mt-auto rounded-pill">View Info</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100 p-4 text-center">
+                        <div class="fs-1 text-primary mb-3"><i class="bi bi-person-heart"></i></div>
+                        <h5 class="card-title">Pediatrics</h5>
+                        <p class="card-text text-muted small mt-2">Care and support for newborn growth, safety, and immunization.</p>
+                        <a href="{% url 'department_list' %}" class="btn btn-sm btn-outline-primary mt-auto rounded-pill">View Info</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100 p-4 text-center">
+                        <div class="fs-1 text-primary mb-3"><i class="bi bi-bandaid-fill"></i></div>
+                        <h5 class="card-title">Orthopedics</h5>
+                        <p class="card-text text-muted small mt-2">Treatment for sports injuries, joint replacement, and trauma surgery.</p>
+                        <a href="{% url 'department_list' %}" class="btn btn-sm btn-outline-primary mt-auto rounded-pill">View Info</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 6. Emergency Contact Banner -->
+<section class="py-5 bg-primary text-white text-center">
+    <div class="container py-4">
+        <div class="col-lg-8 mx-auto">
+            <h2 class="text-white display-5 mb-4">In Case of Any Medical Emergency?</h2>
+            <p class="fs-5 opacity-90 mb-5">Our emergency response unit, medical clinics, and trauma center are fully operational 24/7 with rapid response ambulances.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-4">
+                <a href="tel:+18009999111" class="btn btn-danger btn-lg rounded-pill px-5 py-3 shadow"><i class="bi bi-telephone-outbound-fill me-2"></i> CALL HOTLINE: +1 (800) 999-9111</a>
+                <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3"><i class="bi bi-geo-alt-fill me-2"></i> Emergency Location</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 7. Featured Doctors Section -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <span class="text-primary fw-bold text-uppercase">OUR SPECIALISTS</span>
+                <h2 class="display-6 mt-2 mb-0">Meet Our Expert Specialists</h2>
+            </div>
+            <a href="{% url 'doctor_list' %}" class="btn btn-outline-primary rounded-pill px-4">See All Doctors</a>
+        </div>
+        <div class="row g-4">
+            {% for doc in doctors %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100">
+                        {% if doc.doctor_image %}
+                            <img src="{{ doc.doctor_image.url }}" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. {{ doc.doctor_name }}">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. {{ doc.doctor_name }}">
+                        {% endif %}
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-primary-light text-primary mb-2">{{ doc.doctor_specialization }}</span>
+                            <h5 class="card-title">Dr. {{ doc.doctor_name }}</h5>
+                            <p class="card-text text-muted small mb-3">{{ doc.qualification }} | {{ doc.experience }} Yrs Exp</p>
+                            <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark">${{ doc.consultation_fee }}</span>
+                                <a href="{% url 'appointment_book' %}" class="btn btn-sm btn-primary-custom rounded-pill">Book Slot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <!-- Static Fallback Doctor cards -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100">
+                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. Jane Doe">
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-primary-light text-primary mb-2">Cardiology</span>
+                            <h5 class="card-title">Dr. Jane Doe</h5>
+                            <p class="card-text text-muted small mb-3">MD, FACC | 12 Yrs Exp</p>
+                            <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark">$150.00</span>
+                                <a href="{% url 'appointment_book' %}" class="btn btn-sm btn-primary-custom rounded-pill">Book Slot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100">
+                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. Robert Smith">
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-primary-light text-primary mb-2">Neurology</span>
+                            <h5 class="card-title">Dr. Robert Smith</h5>
+                            <p class="card-text text-muted small mb-3">MD, Ph.D. | 15 Yrs Exp</p>
+                            <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark">$200.00</span>
+                                <a href="{% url 'appointment_book' %}" class="btn btn-sm btn-primary-custom rounded-pill">Book Slot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100">
+                        <img src="https://images.unsplash.com/photo-1594824813573-246434de83fb?q=80&w=400" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. Sarah Jenkins">
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-primary-light text-primary mb-2">Pediatrics</span>
+                            <h5 class="card-title">Dr. Sarah Jenkins</h5>
+                            <p class="card-text text-muted small mb-3">MD (Pediatrics) | 8 Yrs Exp</p>
+                            <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark">$100.00</span>
+                                <a href="{% url 'appointment_book' %}" class="btn btn-sm btn-primary-custom rounded-pill">Book Slot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card card-premium h-100">
+                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=400" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. Alan Cooper">
+                        <div class="card-body p-4 text-center">
+                            <span class="badge bg-primary-light text-primary mb-2">Orthopedics</span>
+                            <h5 class="card-title">Dr. Alan Cooper</h5>
+                            <p class="card-text text-muted small mb-3">MS, DNB | 10 Yrs Exp</p>
+                            <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark">$130.00</span>
+                                <a href="{% url 'appointment_book' %}" class="btn btn-sm btn-primary-custom rounded-pill">Book Slot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 8. Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase">TESTIMONIALS</span>
+            <h2 class="display-6 mt-2">What Our Patients Say</h2>
+        </div>
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner col-lg-8 mx-auto">
+                <div class="carousel-item active text-center">
+                    <div class="card border-0 bg-transparent">
+                        <div class="card-body p-0">
+                            <i class="bi bi-quote fs-1 text-primary"></i>
+                            <p class="fs-5 text-dark mb-4 mt-2">"The care and medical support I received at MediCare was top class. Dr. Doe was extremely patient, detailed, and resolved all my issues with clinical expertise. Truly recommended!"</p>
+                            <h6 class="mb-0 text-dark">Marcus Thompson</h6>
+                            <small class="text-muted">Cardiology Patient</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item text-center">
+                    <div class="card border-0 bg-transparent">
+                        <div class="card-body p-0">
+                            <i class="bi bi-quote fs-1 text-primary"></i>
+                            <p class="fs-5 text-dark mb-4 mt-2">"Excellent digital features. Being able to book appointments online, filter doctors dynamically, and check my lab reports on the dashboard was extremely convenient!"</p>
+                            <h6 class="mb-0 text-dark">Linda Martinez</h6>
+                            <small class="text-muted">Outpatient Patient</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="filter: invert(1);">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" style="filter: invert(1);">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- 9. Latest News Section -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase">LATEST NEWS</span>
+            <h2 class="display-6 mt-2">Health Articles & Medical News</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=400" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Cardiovascular health">
+                    <div class="card-body p-4">
+                        <span class="text-primary small fw-semibold">CARDIOLOGY &bull; JULY 24, 2026</span>
+                        <h5 class="card-title mt-2"><a href="#" class="text-decoration-none text-dark hover-text-primary">Protecting Your Heart in High Temperatures</a></h5>
+                        <p class="text-muted small mt-2">Essential health advice from clinical specialists on staying hydrated and exercising safely during heatwaves.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=400" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Nutrition">
+                    <div class="card-body p-4">
+                        <span class="text-primary small fw-semibold">NUTRITION &bull; JULY 18, 2026</span>
+                        <h5 class="card-title mt-2"><a href="#" class="text-decoration-none text-dark hover-text-primary">Impact of Gut Health on Neuro System</a></h5>
+                        <p class="text-muted small mt-2">Explore the recent medical studies tracing the chemical connections between digestive micro-flora and brain health.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=400" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Pediatric Vaccines">
+                    <div class="card-body p-4">
+                        <span class="text-primary small fw-semibold">PEDIATRICS &bull; JULY 10, 2026</span>
+                        <h5 class="card-title mt-2"><a href="#" class="text-decoration-none text-dark hover-text-primary">Guide to Toddler Immunization Schedule</a></h5>
+                        <p class="text-muted small mt-2">A simplified schedule tracking standard vaccinations required for children during the first three years.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

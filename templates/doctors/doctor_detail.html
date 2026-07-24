@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Dr. {{ doctor.doctor_name }} | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="row g-4 justify-content-center">
+            <!-- Doctor Main Card Profile -->
+            <div class="col-lg-10">
+                <div class="card border-0 shadow rounded-4 overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            {% if doctor.doctor_image %}
+                                <img src="{{ doctor.doctor_image.url }}" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 400px;" alt="Dr. {{ doctor.doctor_name }}">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=600" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 400px;" alt="Dr. {{ doctor.doctor_name }}">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-7 p-4 p-md-5 d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <span class="badge bg-primary px-3 py-2 rounded-pill mb-2">{{ doctor.department.department_name }}</span>
+                                        <h2 class="display-6">Dr. {{ doctor.doctor_name }}</h2>
+                                        <p class="text-primary fw-semibold mb-0 fs-5">{{ doctor.doctor_specialization }}</p>
+                                    </div>
+                                    {% if user.is_authenticated and user.is_admin %}
+                                        <a href="{% url 'doctor_edit' doctor.id %}" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-pencil-square"></i> Edit</a>
+                                    {% endif %}
+                                </div>
+                                <hr>
+                                <div class="row g-3 my-2">
+                                    <div class="col-sm-6">
+                                        <small class="text-muted d-block">Qualifications</small>
+                                        <strong class="text-dark">{{ doctor.qualification }}</strong>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <small class="text-muted d-block">Experience</small>
+                                        <strong class="text-dark">{{ doctor.experience }} Years</strong>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <small class="text-muted d-block">Phone Contact</small>
+                                        <strong class="text-dark">{{ doctor.phone }}</strong>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <small class="text-muted d-block">Email Address</small>
+                                        <strong class="text-dark">{{ doctor.email }}</strong>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="p-3 bg-light rounded-3 my-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted">Available Days:</span>
+                                        <strong class="text-dark">{{ doctor.available_days }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">Available Slots:</span>
+                                        <strong class="text-dark">{{ doctor.available_time }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-4 border-top pt-4">
+                                <div>
+                                    <span class="text-muted small d-block">Consultation Fee</span>
+                                    <h4 class="mb-0 text-primary">${{ doctor.consultation_fee }}</h4>
+                                </div>
+                                <a href="{% url 'appointment_book' %}?doctor={{ doctor.id }}" class="btn btn-primary-custom btn-lg rounded-pill px-5">Book Consultation Slot</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

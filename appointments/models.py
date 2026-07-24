@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-import datetime
 from patients.models import Patient
 from doctors.models import Doctor
 
@@ -23,24 +22,26 @@ class Appointment(models.Model):
 
     def clean(self):
         super().clean()
-        # Prevent booking past dates
-        if self.appointment_date and self.appointment_date < datetime.date.today():
-            raise ValidationError({'appointment_date': "You cannot book an appointment for a past date."})
-
-        # Prevent double booking for same doctor at same date and time
-        if self.appointment_date and self.appointment_time and self.doctor_id:
-            overlap = Appointment.objects.filter(
+        
+        # 1. Prevent past dates
+        if self.appointment_date and self.appointment_date < timezone.now().date():
+            raise ValidationError({'appointment_date': "You cannot book an appointment in the past."})
+            
+        # 2. Prevent double booking for the same doctor and time
+        if self.doctor and self.appointment_date and self.appointment_time:
+            # Query for duplicate appointments
+            duplicates = Appointment.objects.filter(
                 doctor=self.doctor,
                 appointment_date=self.appointment_date,
                 appointment_time=self.appointment_time
-            ).exclude(appointment_status='Cancelled')
+            ).exclude(appointment_status='Cancelled') # Ignore cancelled ones
             
+            # Exclude current instance if editing
             if self.pk:
-                overlap = overlap.exclude(pk=self.pk)
+                duplicates = duplicates.exclude(pk=self.pk)
                 
-            if overlap.exists():
-                raise ValidationError("This doctor is already booked for this specific date and time.")
+            if duplicates.exists():
+                raise ValidationError("This time slot is already booked for Dr. " + self.doctor.doctor_name + ". Please choose another slot.")
 
     def __str__(self):
-        return f"{self.patient.patient_name} - Dr. {self.doctor.doctor_name} ({self.appointment_date} {self.appointment_time})"
-
+        return f"{self.patient.patient_name} with Dr. {self.doctor.doctor_name} on {self.appointment_date} at {self.appointment_time}"

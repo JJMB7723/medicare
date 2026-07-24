@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Medical Records | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="mb-5">
+            <span class="text-primary fw-bold text-uppercase">HEALTH MANAGEMENT</span>
+            <h1 class="display-6 mt-1 mb-0">Clinical Medical Records</h1>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-3">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Visit Date</th>
+                                <th>Patient</th>
+                                <th>Attending Doctor</th>
+                                <th>Diagnosis</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                                <tr>
+                                    <td><strong>{{ record.visit_date }}</strong></td>
+                                    <td>
+                                        <a href="{% url 'patient_detail' record.patient.id %}" class="text-decoration-none fw-semibold">
+                                            {{ record.patient.patient_name }}
+                                        </a>
+                                    </td>
+                                    <td>Dr. {{ record.doctor.doctor_name }}</td>
+                                    <td>{{ record.diagnosis|truncatewords:15 }}</td>
+                                    <td>
+                                        <a href="{% url 'record_detail' record.id %}" class="btn btn-sm btn-primary rounded-pill px-3">View Rx Details</a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-5 text-muted">No medical records registered.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

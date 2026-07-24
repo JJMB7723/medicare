@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Medical Record Detail | MediCare Hospital{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Printable prescription card -->
+                <div class="card border-0 shadow rounded-4 overflow-hidden" id="printable-record">
+                    <div class="bg-primary text-white p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0 text-white"><i class="bi bi-heart-pulse-fill"></i> MediCare Hospital</h3>
+                            <small class="opacity-80">456 Clinical Parkway, Health City, NY 10023</small>
+                        </div>
+                        <div class="text-end">
+                            <h4 class="mb-0 text-white-50 text-uppercase">PRESCRIPTION</h4>
+                            <small>Date: {{ record.visit_date }}</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-5">
+                        <!-- Patient and doctor header info -->
+                        <div class="row mb-4">
+                            <div class="col-sm-6">
+                                <h6 class="text-muted text-uppercase mb-2 small">Patient Details</h6>
+                                <h5><strong>{{ record.patient.patient_name }}</strong></h5>
+                                <p class="mb-0 text-muted small">Age: {{ record.patient.patient_age }} &bull; Gender: {{ record.patient.gender }}</p>
+                                <p class="mb-0 text-muted small">Blood Group: {{ record.patient.blood_group }}</p>
+                            </div>
+                            <div class="col-sm-6 text-sm-end mt-3 mt-sm-0">
+                                <h6 class="text-muted text-uppercase mb-2 small">Consulting Specialist</h6>
+                                <h5><strong>Dr. {{ record.doctor.doctor_name }}</strong></h5>
+                                <p class="mb-0 text-muted small">{{ record.doctor.doctor_specialization }}</p>
+                                <p class="mb-0 text-muted small">{{ record.doctor.qualification }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <!-- Diagnosis details -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="bi bi-activity"></i> Clinical Diagnosis</h5>
+                            <div class="p-3 bg-light rounded border-start border-primary border-4 text-dark" style="white-space: pre-wrap;">{{ record.diagnosis }}</div>
+                        </div>
+                        
+                        <!-- Prescriptions details -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3"><i class="bi bi-prescription"></i> Medication & Dosage</h5>
+                            <div class="p-3 bg-light rounded border-start border-success border-4 text-dark" style="white-space: pre-wrap;">{{ record.prescription }}</div>
+                        </div>
+
+                        <!-- Report attachment if exists -->
+                        {% if record.report_file %}
+                            <hr>
+                            <div class="p-3 bg-primary-light rounded border border-primary d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-file-earmark-pdf-fill fs-2 text-primary"></i>
+                                    <div>
+                                        <h6 class="mb-0 text-dark">Attached Laboratory Report</h6>
+                                        <small class="text-muted">Diagnostic lab report details</small>
+                                    </div>
+                                </div>
+                                <a href="{{ record.report_file.url }}" target="_blank" class="btn btn-sm btn-primary rounded-pill px-4"><i class="bi bi-download"></i> View File</a>
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Signatures layout -->
+                        <div class="row mt-5 pt-4">
+                            <div class="col-6">
+                                <div style="height: 1px; background-color: var(--border); width: 150px; margin-bottom: 5px;"></div>
+                                <small class="text-muted">Patient Signature</small>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div style="height: 1px; background-color: var(--border); width: 150px; margin-bottom: 5px; margin-left: auto;"></div>
+                                <small class="text-muted">Dr. {{ record.doctor.doctor_name }} (MD)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'patient_detail' record.patient.id %}" class="btn btn-outline-secondary px-4 rounded-pill"><i class="bi bi-arrow-left"></i> Back to Patient</a>
+                    <button onclick="window.print()" class="btn btn-primary-custom px-4 rounded-pill"><i class="bi bi-printer-fill"></i> Print Prescription</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Inline CSS to hide navigation and footer when printing -->
+<style>
+@media print {
+    nav, footer, .btn, .back-to-top {
+        display: none !important;
+    }
+    body {
+        background-color: white !important;
+    }
+    #printable-record {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
+</style>
+{% endblock %}

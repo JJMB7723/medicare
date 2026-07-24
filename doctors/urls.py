@@ -1,12 +1,11 @@
 from django.urls import path
 from . import views
 
-app_name = 'doctors'
-
 urlpatterns = [
-    path('', views.DoctorListView.as_view(), name='list'),
-    path('add/', views.DoctorCreateView.as_view(), name='add'),
-    path('<int:pk>/', views.DoctorDetailView.as_view(), name='detail'),
-    path('<int:pk>/edit/', views.DoctorUpdateView.as_view(), name='edit'),
-    path('<int:pk>/delete/', views.DoctorDeleteView.as_view(), name='delete'),
+    path('', views.doctor_list, name='doctor_list'),
+    path('<int:pk>/', views.doctor_detail, name='doctor_detail'),
+    path('add/', views.doctor_add, name='doctor_add'),
+    path('<int:pk>/edit/', views.doctor_edit, name='doctor_edit'),
+    path('<int:pk>/delete/', views.doctor_delete, name='doctor_delete'),
+    path('ajax/load-doctors/', views.load_doctors, name='ajax_load_doctors'),
 ]

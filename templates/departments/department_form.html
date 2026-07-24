@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }} | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card border-0 shadow-md rounded-3">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <h4 class="mb-0"><i class="bi bi-building-add text-primary"></i> {{ title }}</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{% url 'department_list' %}" class="btn btn-outline-secondary px-4 rounded-pill">Cancel</a>
+                                <button type="submit" class="btn btn-primary-custom px-4 rounded-pill">Save Department</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

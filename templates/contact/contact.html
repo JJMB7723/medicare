@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="mb-5 text-center">
+            <span class="text-primary fw-bold text-uppercase">GET IN TOUCH</span>
+            <h1 class="display-6 mt-1">Contact MediCare Hospital</h1>
+            <p class="col-md-6 mx-auto mt-2">Have inquiries, comments, or feedback? Send us a message, or dial our hotlines directly to reach our clinical desks.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column: Contact info and Google Map -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-3 h-100 p-4">
+                    <h4 class="mb-4">Hospital Contact Information</h4>
+                    
+                    <div class="d-flex gap-3 align-items-start mb-4">
+                        <i class="bi bi-geo-alt-fill fs-4 text-primary"></i>
+                        <div>
+                            <h6 class="mb-1 text-dark">Hospital Location</h6>
+                            <p class="text-muted mb-0">456 Clinical Parkway, Health City, NY 10023</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-3 align-items-start mb-4">
+                        <i class="bi bi-telephone-fill fs-4 text-primary"></i>
+                        <div>
+                            <h6 class="mb-1 text-dark">Phone Contacts</h6>
+                            <p class="text-muted mb-1">Ambulance Hotline: <strong>+1 (800) 999-9111</strong></p>
+                            <p class="text-muted mb-1">Reception / Front Desk: <strong>+1 (212) 555-0190</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-3 align-items-start mb-4">
+                        <i class="bi bi-envelope-fill fs-4 text-primary"></i>
+                        <div>
+                            <h6 class="mb-1 text-dark">Email Inquiries</h6>
+                            <p class="text-muted mb-0">info@medicarehospital.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Embed Google Maps Mockup iframe -->
+                    <div class="mt-4 rounded-3 overflow-hidden border" style="height: 250px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830913502!2d-74.11976332152865!3d40.69766374859258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Message Form -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-3 h-100 p-4">
+                    <h4 class="mb-4">Send Us a Message</h4>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary-custom btn-lg rounded-pill"><i class="bi bi-send-fill"></i> Submit Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

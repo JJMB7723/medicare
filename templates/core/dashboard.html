@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-3">
+        <!-- Header welcome banner -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="p-4 bg-white rounded-3 shadow-sm border d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <span class="badge bg-primary px-3 py-2 rounded-pill mb-2 text-uppercase">Role: {{ user.get_role_display }}</span>
+                        <h2 class="mb-0">Hello, {{ user.first_name|default:user.username }}!</h2>
+                        <p class="text-muted mb-0 small">Welcome back to your MediCare management portal.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        {% if user.role == 'patient' %}
+                            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom rounded-pill"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
+                        {% elif user.is_receptionist %}
+                            <a href="{% url 'patient_register' %}" class="btn btn-outline-primary rounded-pill"><i class="bi bi-person-plus-fill"></i> Register Patient</a>
+                            <a href="{% url 'appointment_book' %}" class="btn btn-primary-custom rounded-pill"><i class="bi bi-calendar-plus"></i> Book Appointment</a>
+                        {% elif user.is_admin %}
+                            <a href="{% url 'doctor_add' %}" class="btn btn-outline-primary rounded-pill"><i class="bi bi-person-badge-fill"></i> Add Doctor</a>
+                            <a href="{% url 'department_add' %}" class="btn btn-primary-custom rounded-pill"><i class="bi bi-building-add"></i> Add Department</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Based Dashboard Content -->
+        {% if user.is_admin %}
+            <!-- ================= ADMIN DASHBOARD ================= -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-people-fill text-primary fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.patients }}</h3>
+                        <span class="text-muted small uppercase">Patients</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-heart-pulse-fill text-success fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.doctors }}</h3>
+                        <span class="text-muted small uppercase">Doctors</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-calendar-check-fill text-warning fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.appointments }}</h3>
+                        <span class="text-muted small uppercase">Appointments</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-building-fill text-info fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.departments }}</h3>
+                        <span class="text-muted small uppercase">Departments</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0"><i class="bi bi-calendar3 text-primary"></i> Recent Appointments</h4>
+                            <a href="{% url 'appointment_list' %}" class="btn btn-sm btn-outline-primary rounded-pill">View All</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Doctor</th>
+                                            <th>Date / Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for app in recent_appointments %}
+                                            <tr>
+                                                <td><strong>{{ app.patient.patient_name }}</strong></td>
+                                                <td>Dr. {{ app.doctor.doctor_name }}</td>
+                                                <td>{{ app.appointment_date }} at {{ app.appointment_time }}</td>
+                                                <td>
+                                                    <span class="badge {% if app.appointment_status == 'Approved' %}bg-success{% elif app.appointment_status == 'Cancelled' %}bg-danger{% elif app.appointment_status == 'Completed' %}bg-secondary{% else %}bg-warning{% endif %}">
+                                                        {{ app.appointment_status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {% if app.appointment_status == 'Pending' %}
+                                                        <a href="{% url 'appointment_update_status' app.id 'Approved' %}" class="btn btn-sm btn-success rounded-pill px-3 me-1">Approve</a>
+                                                    {% endif %}
+                                                    {% if app.appointment_status != 'Cancelled' and app.appointment_status != 'Completed' %}
+                                                        <a href="{% url 'appointment_update_status' app.id 'Cancelled' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Cancel</a>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4 text-muted">No appointments found.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% elif user.is_doctor %}
+            <!-- ================= DOCTOR DASHBOARD ================= -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                        <div class="card-body p-4 text-center">
+                            {% if doctor.doctor_image %}
+                                <img src="{{ doctor.doctor_image.url }}" class="rounded-circle mb-3 shadow" style="width: 120px; height: 120px; object-fit: cover;" alt="Doctor">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400" class="rounded-circle mb-3 shadow" style="width: 120px; height: 120px; object-fit: cover;" alt="Doctor">
+                            {% endif %}
+                            <h4>Dr. {{ doctor.doctor_name }}</h4>
+                            <p class="text-primary fw-semibold mb-1">{{ doctor.doctor_specialization }}</p>
+                            <p class="text-muted small mb-0">{{ doctor.qualification }} &bull; {{ doctor.experience }} Years Exp</p>
+                            <hr>
+                            <div class="d-flex justify-content-between text-start small">
+                                <span class="text-muted">Available Days:</span>
+                                <strong class="text-dark">{{ doctor.available_days }}</strong>
+                            </div>
+                            <div class="d-flex justify-content-between text-start small mt-2">
+                                <span class="text-muted">Available Time:</span>
+                                <strong class="text-dark">{{ doctor.available_time }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h4 class="mb-0"><i class="bi bi-journal-text text-primary"></i> Patient Appointments</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Patient</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                            <th>Record</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for app in appointments %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{% url 'patient_detail' app.patient.id %}" class="text-decoration-none fw-semibold">
+                                                        {{ app.patient.patient_name }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ app.appointment_date }} at {{ app.appointment_time }}</td>
+                                                <td>
+                                                    <span class="badge {% if app.appointment_status == 'Approved' %}bg-success{% elif app.appointment_status == 'Cancelled' %}bg-danger{% elif app.appointment_status == 'Completed' %}bg-secondary{% else %}bg-warning{% endif %}">
+                                                        {{ app.appointment_status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {% if app.appointment_status == 'Approved' %}
+                                                        <a href="{% url 'record_add' app.patient.id %}" class="btn btn-sm btn-primary rounded-pill px-3">Add Medical Record</a>
+                                                    {% elif app.appointment_status == 'Completed' %}
+                                                        <span class="text-success small"><i class="bi bi-check2-circle"></i> Logged</span>
+                                                    {% else %}
+                                                        <span class="text-muted small">-</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center py-4 text-muted">No appointments assigned.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% elif user.is_receptionist %}
+            <!-- ================= RECEPTIONIST DASHBOARD ================= -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-people-fill text-primary fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.patients }}</h3>
+                        <span class="text-muted small uppercase">Registered Patients</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-clock-history text-warning fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.appointments_pending }}</h3>
+                        <span class="text-muted small uppercase">Pending Bookings</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-white rounded-3 border shadow-sm text-center">
+                        <i class="bi bi-check-circle-fill text-success fs-1 mb-2 d-block"></i>
+                        <h3 class="mb-0">{{ stats.appointments_approved }}</h3>
+                        <span class="text-muted small uppercase">Approved Bookings</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h4 class="mb-0"><i class="bi bi-clipboard2-check text-primary"></i> Front-Desk Appointment Manager</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Patient Name</th>
+                                            <th>Assigned Doctor</th>
+                                            <th>Schedule Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for app in recent_appointments %}
+                                            <tr>
+                                                <td><strong>{{ app.patient.patient_name }}</strong></td>
+                                                <td>Dr. {{ app.doctor.doctor_name }}</td>
+                                                <td>{{ app.appointment_date }} at {{ app.appointment_time }}</td>
+                                                <td>
+                                                    <span class="badge {% if app.appointment_status == 'Approved' %}bg-success{% elif app.appointment_status == 'Cancelled' %}bg-danger{% elif app.appointment_status == 'Completed' %}bg-secondary{% else %}bg-warning{% endif %}">
+                                                        {{ app.appointment_status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {% if app.appointment_status == 'Pending' %}
+                                                        <a href="{% url 'appointment_update_status' app.id 'Approved' %}" class="btn btn-sm btn-success rounded-pill px-3 me-1">Approve</a>
+                                                    {% endif %}
+                                                    {% if app.appointment_status != 'Cancelled' and app.appointment_status != 'Completed' %}
+                                                        <a href="{% url 'appointment_update_status' app.id 'Cancelled' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Cancel</a>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4 text-muted">No appointments found.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <!-- ================= PATIENT DASHBOARD ================= -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h4 class="mb-0"><i class="bi bi-person-fill text-primary"></i> Patient Profile</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            {% if patient %}
+                                <h4 class="mb-1">{{ patient.patient_name }}</h4>
+                                <p class="text-muted small mb-3">Email: {{ patient.patient_email }}</p>
+                                <div class="d-flex justify-content-between border-top pt-2 small">
+                                    <span class="text-muted">Age:</span>
+                                    <strong class="text-dark">{{ patient.patient_age }} Yrs</strong>
+                                </div>
+                                <div class="d-flex justify-content-between border-top pt-2 mt-2 small">
+                                    <span class="text-muted">Gender:</span>
+                                    <strong class="text-dark">{{ patient.gender }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between border-top pt-2 mt-2 small">
+                                    <span class="text-muted">Blood Group:</span>
+                                    <strong class="text-danger">{{ patient.blood_group }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between border-top pt-2 mt-2 small">
+                                    <span class="text-muted">Phone:</span>
+                                    <strong class="text-dark">{{ patient.patient_phone }}</strong>
+                                </div>
+                                <div class="border-top pt-3 mt-3">
+                                    <span class="text-muted d-block small mb-1">Registered Address:</span>
+                                    <p class="small text-dark mb-0">{{ patient.address }}</p>
+                                </div>
+                                <div class="border-top pt-3 mt-3">
+                                    <span class="text-muted d-block small mb-1">Stated Symptom/Problem:</span>
+                                    <p class="small text-dark mb-0">{{ patient.patient_problem }}</p>
+                                </div>
+                                <div class="mt-4">
+                                    <a href="{% url 'patient_edit' patient.id %}" class="btn btn-outline-primary btn-sm w-100 rounded-pill"><i class="bi bi-pencil-square"></i> Edit Details</a>
+                                </div>
+                            {% else %}
+                                <div class="text-center py-3">
+                                    <p class="text-muted">You have not completed your clinical profile yet.</p>
+                                    <a href="{% url 'patient_register' %}" class="btn btn-primary-custom btn-sm rounded-pill px-4">Register Clinical Profile</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h4 class="mb-0"><i class="bi bi-clock-fill text-primary"></i> Active Consultations</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Doctor Name</th>
+                                            <th>Department</th>
+                                            <th>Date & Time</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for app in appointments %}
+                                            <tr>
+                                                <td>Dr. {{ app.doctor.doctor_name }}</td>
+                                                <td>{{ app.doctor.department.department_name }}</td>
+                                                <td>{{ app.appointment_date }} at {{ app.appointment_time }}</td>
+                                                <td>
+                                                    <span class="badge {% if app.appointment_status == 'Approved' %}bg-success{% elif app.appointment_status == 'Cancelled' %}bg-danger{% elif app.appointment_status == 'Completed' %}bg-secondary{% else %}bg-warning{% endif %}">
+                                                        {{ app.appointment_status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {% if app.appointment_status == 'Pending' or app.appointment_status == 'Approved' %}
+                                                        <a href="{% url 'appointment_update_status' app.id 'Cancelled' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">Cancel</a>
+                                                    {% else %}
+                                                        <span class="text-muted small">-</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4 text-muted">No appointments booked yet.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical history records list -->
+                    <div class="card border-0 shadow-sm rounded-3 mt-4">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h4 class="mb-0"><i class="bi bi-file-earmark-medical text-primary"></i> Diagnoses & Medical History</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Diagnosis Date</th>
+                                            <th>Attending Doctor</th>
+                                            <th>Diagnosis Description</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for record in patient.medical_records.all %}
+                                            <tr>
+                                                <td>{{ record.visit_date }}</td>
+                                                <td>Dr. {{ record.doctor.doctor_name }}</td>
+                                                <td>{{ record.diagnosis|truncatewords:10 }}</td>
+                                                <td>
+                                                    <a href="{% url 'record_detail' record.id %}" class="btn btn-sm btn-primary rounded-pill px-3">View Rx Details</a>
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center py-4 text-muted">No clinical logs registered.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

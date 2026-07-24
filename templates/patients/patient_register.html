@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Patient Online Registration | MediCare Hospital{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-md rounded-3">
+                    <div class="card-header bg-white border-bottom py-3 text-center">
+                        <h3 class="mb-0 text-primary">Patient Registration</h3>
+                        <p class="text-muted mb-0 small">Create your account and complete your healthcare profile to book appointments</p>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <form method="post" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <h5 class="text-primary border-bottom pb-2 mb-3"><i class="bi bi-person-fill-gear"></i> Portal Login Account</h5>
+                                    {{ form.username|as_crispy_field }}
+                                    {{ form.email|as_crispy_field }}
+                                    {{ form.password|as_crispy_field }}
+                                    {{ form.confirm_password|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="text-primary border-bottom pb-2 mb-3"><i class="bi bi-clipboard2-pulse"></i> Patient Bio & Health Info</h5>
+                                    {{ form.patient_name|as_crispy_field }}
+                                    <div class="row">
+                                        <div class="col-6">
+                                            {{ form.patient_age|as_crispy_field }}
+                                        </div>
+                                        <div class="col-6">
+                                            {{ form.gender|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            {{ form.patient_phone|as_crispy_field }}
+                                        </div>
+                                        <div class="col-6">
+                                            {{ form.blood_group|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    {{ form.patient_email|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    {{ form.address|as_crispy_field }}
+                                    {{ form.patient_problem|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary-custom btn-lg rounded-pill">Create Account & Register Profile</button>
+                            </div>
+                        </form>
+                        <hr class="my-4">
+                        <div class="text-center">
+                            <span class="text-muted small">Already registered?</span>
+                            <a href="{% url 'login' %}" class="small fw-semibold text-decoration-none text-primary ms-1">Login to Portal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

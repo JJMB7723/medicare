@@ -1,7 +1,8 @@
 from django.test import TestCase
-from django.contrib.auth import get_user_model
+from django.utils import timezone
 from django.core.exceptions import ValidationError
-import datetime
+from django.contrib.auth import get_user_model
+from datetime import timedelta, time
 from departments.models import Department
 from doctors.models import Doctor
 from patients.models import Patient
@@ -9,90 +10,83 @@ from appointments.models import Appointment
 
 User = get_user_model()
 
-class AppointmentValidationTestCase(TestCase):
+class AppointmentValidationTests(TestCase):
     def setUp(self):
-        self.doc_user = User.objects.create_user(username='docuser', password='password123', role='Doctor')
-        self.pat_user = User.objects.create_user(username='patuser', password='password123', role='Patient')
-        
-        self.department = Department.objects.create(
+        self.dept = Department.objects.create(
             department_name="Cardiology",
             department_description="Heart Care"
         )
-        
         self.doctor = Doctor.objects.create(
-            user=self.doc_user,
-            doctor_name="Alice Smith",
+            doctor_name="Sarah Jenkins",
             doctor_specialization="Cardiologist",
             qualification="MD",
             experience=10,
-            phone="+1234567890",
-            email="alice@medicare.com",
-            consultation_fee=150.00,
-            department=self.department,
-            available_days="Mon, Wed",
-            available_time="09:00 AM - 01:00 PM"
+            phone="12345",
+            email="sjenkins@test.com",
+            consultation_fee=100.00,
+            department=self.dept,
+            available_days="Monday",
+            available_time="09:00 AM - 05:00 PM"
         )
-        
         self.patient = Patient.objects.create(
-            user=self.pat_user,
-            patient_name="Bob Jones",
-            patient_age=45,
+            patient_name="John Miller",
+            patient_age=30,
             gender="Male",
-            patient_phone="+1987654321",
-            patient_email="bob@example.com",
-            address="123 Main St",
+            patient_phone="98765",
+            patient_email="jmiller@test.com",
+            address="123 Street",
             blood_group="O+",
-            patient_problem="Chest pain"
+            patient_problem="Chest Pain"
         )
 
-    def test_successful_appointment_booking(self):
-        """Test booking a valid appointment is successful."""
-        future_date = datetime.date.today() + datetime.timedelta(days=2)
-        appt = Appointment(
-            patient=self.patient,
-            doctor=self.doctor,
-            appointment_date=future_date,
-            appointment_time=datetime.time(10, 0),
-            appointment_status='Pending'
-        )
-        appt.full_clean()
-        appt.save()
-        self.assertEqual(Appointment.objects.count(), 1)
-
-    def test_past_date_booking_prevention(self):
-        """Test that booking an appointment on a past date raises a validation error."""
-        past_date = datetime.date.today() - datetime.timedelta(days=1)
-        appt = Appointment(
+    def test_prevent_past_date_booking(self):
+        """Should raise ValidationError if appointment is booked for a past date."""
+        past_date = timezone.now().date() - timedelta(days=1)
+        appointment = Appointment(
             patient=self.patient,
             doctor=self.doctor,
             appointment_date=past_date,
-            appointment_time=datetime.time(10, 0)
+            appointment_time=time(10, 0),
+            appointment_status="Pending"
         )
-        with self.assertRaises(ValidationError) as context:
-            appt.full_clean()
-        self.assertIn('appointment_date', context.exception.message_dict)
-
-    def test_double_booking_prevention(self):
-        """Test that booking the same doctor on the same date and time raises a validation error."""
-        future_date = datetime.date.today() + datetime.timedelta(days=5)
-        time_slot = datetime.time(11, 0)
-        
-        appt1 = Appointment.objects.create(
-            patient=self.patient,
-            doctor=self.doctor,
-            appointment_date=future_date,
-            appointment_time=time_slot,
-            appointment_status='Approved'
-        )
-        
-        appt2 = Appointment(
-            patient=self.patient,
-            doctor=self.doctor,
-            appointment_date=future_date,
-            appointment_time=time_slot,
-            appointment_status='Pending'
-        )
-        
         with self.assertRaises(ValidationError):
-            appt2.full_clean()
+            appointment.full_clean()
 
+    def test_allow_future_date_booking(self):
+        """Should succeed when booking for a future date."""
+        future_date = timezone.now().date() + timedelta(days=5)
+        appointment = Appointment(
+            patient=self.patient,
+            doctor=self.doctor,
+            appointment_date=future_date,
+            appointment_time=time(10, 0),
+            appointment_status="Pending"
+        )
+        # Should execute successfully without throwing errors
+        appointment.full_clean()
+
+    def test_prevent_double_booking_same_doctor_and_time(self):
+        """Should raise ValidationError if doctor is booked for the same date and time slot."""
+        future_date = timezone.now().date() + timedelta(days=5)
+        app_time = time(11, 30)
+
+        # Create first booking
+        Appointment.objects.create(
+            patient=self.patient,
+            doctor=self.doctor,
+            appointment_date=future_date,
+            appointment_time=app_time,
+            appointment_status="Pending"
+        )
+
+        # Attempt to book second appointment for same doctor, date, time
+        app2 = Appointment(
+            patient=self.patient,
+            doctor=self.doctor,
+            appointment_date=future_date,
+            appointment_time=app_time,
+            appointment_status="Pending"
+        )
+
+        with self.assertRaises(ValidationError):
+            app2.full_clean()

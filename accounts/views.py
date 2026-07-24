@@ -1,59 +1,44 @@
-from django.shortcuts import render
-from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from appointments.models import Appointment
-from patients.models import Patient
-from doctors.models import Doctor
-from departments.models import Department
-from medical_records.models import MedicalRecord
-from contact.models import ContactMessage
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
-class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/dashboard.html'
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Welcome back, {user.username}!")
+                return redirect('dashboard')
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        form = AuthenticationForm()
+    return render(request, 'accounts/login.html', {'form': form})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-        role = user.role
+def logout_view(request):
+    logout(request)
+    messages.info(request, "You have successfully logged out.")
+    return redirect('home')
 
-        if role in ['Admin', 'Receptionist']:
-            # Administrative Dashboard
-            context['total_appointments'] = Appointment.objects.count()
-            context['pending_appointments'] = Appointment.objects.filter(appointment_status='Pending').count()
-            context['total_doctors'] = Doctor.objects.count()
-            context['total_patients'] = Patient.objects.count()
-            context['total_departments'] = Department.objects.count()
-            
-            # Recent items
-            context['recent_appointments'] = Appointment.objects.all().order_by('-created_at')[:5]
-            context['recent_patients'] = Patient.objects.all().order_by('-created_at')[:5]
-            context['recent_messages'] = ContactMessage.objects.all().order_by('-created_at')[:5]
-
-        elif role == 'Doctor':
-            # Doctor Dashboard
-            try:
-                doctor = user.doctor_profile
-                context['doctor'] = doctor
-                context['appointments'] = Appointment.objects.filter(doctor=doctor).order_by('-appointment_date', '-appointment_time')
-                context['total_patients'] = Patient.objects.filter(appointments__doctor=doctor).distinct().count()
-                context['medical_records'] = MedicalRecord.objects.filter(doctor=doctor).order_by('-visit_date')
-            except Doctor.DoesNotExist:
-                context['doctor'] = None
-                context['appointments'] = []
-                context['total_patients'] = 0
-                context['medical_records'] = []
-
-        elif role == 'Patient':
-            # Patient Dashboard
-            try:
-                patient = user.patient_profile
-                context['patient'] = patient
-                context['appointments'] = Appointment.objects.filter(patient=patient).order_by('-appointment_date', '-appointment_time')
-                context['medical_records'] = MedicalRecord.objects.filter(patient=patient).order_by('-visit_date')
-            except Patient.DoesNotExist:
-                context['patient'] = None
-                context['appointments'] = []
-                context['medical_records'] = []
-
-        return context
-
+@login_required
+def password_change_view(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Keep the user logged in
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/password_change.html', {'form': form})

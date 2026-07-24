@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Profile - {{ patient.patient_name }} | MediCare Hospital{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="row g-4">
+            <!-- Left Column: Patient Profile Summary Card -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="bi bi-person-fill text-primary"></i> Patient Bio</h4>
+                        {% if user.is_admin or user.is_receptionist or user.patient_profile == patient %}
+                            <a href="{% url 'patient_edit' patient.id %}" class="btn btn-sm btn-outline-primary rounded-pill"><i class="bi bi-pencil-square"></i> Edit</a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="mb-1">{{ patient.patient_name }}</h3>
+                        <span class="badge bg-danger bg-opacity-10 text-danger mb-3">{{ patient.blood_group }} Blood Group</span>
+                        
+                        <div class="d-flex justify-content-between border-top pt-2 small">
+                            <span class="text-muted">Age / Gender:</span>
+                            <strong class="text-dark">{{ patient.patient_age }} Yrs / {{ patient.gender }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between border-top pt-2 mt-2 small">
+                            <span class="text-muted">Phone Number:</span>
+                            <strong class="text-dark">{{ patient.patient_phone }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between border-top pt-2 mt-2 small">
+                            <span class="text-muted">Email Address:</span>
+                            <strong class="text-dark">{{ patient.patient_email }}</strong>
+                        </div>
+                        
+                        <div class="border-top pt-3 mt-3">
+                            <span class="text-muted d-block small mb-1">Residential Address:</span>
+                            <p class="small text-dark mb-0">{{ patient.address }}</p>
+                        </div>
+                        <div class="border-top pt-3 mt-3">
+                            <span class="text-muted d-block small mb-1">Medical Issue / Complaint:</span>
+                            <p class="small text-dark mb-0">{{ patient.patient_problem }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Consultation Logs and Medical History -->
+            <div class="col-lg-8">
+                <!-- Active Appointments -->
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <h4 class="mb-0"><i class="bi bi-calendar3 text-primary"></i> Consultations Log</h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Doctor</th>
+                                        <th>Date & Time</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for app in appointments %}
+                                        <tr>
+                                            <td>Dr. {{ app.doctor.doctor_name }} ({{ app.doctor.department.department_name }})</td>
+                                            <td>{{ app.appointment_date }} at {{ app.appointment_time }}</td>
+                                            <td>
+                                                <span class="badge {% if app.appointment_status == 'Approved' %}bg-success{% elif app.appointment_status == 'Cancelled' %}bg-danger{% elif app.appointment_status == 'Completed' %}bg-secondary{% else %}bg-warning{% endif %}">
+                                                    {{ app.appointment_status }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center py-4 text-muted">No appointments recorded.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Records -->
+                <div class="card border-0 shadow-sm rounded-3 mt-4">
+                    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="bi bi-file-earmark-medical text-primary"></i> Diagnoses & Reports</h4>
+                        {% if user.role == 'doctor' or user.role == 'admin' %}
+                            <a href="{% url 'record_add' patient.id %}" class="btn btn-sm btn-primary rounded-pill"><i class="bi bi-plus-circle"></i> Add Medical Record</a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Visit Date</th>
+                                        <th>Diagnosis</th>
+                                        <th>Doctor</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in medical_records %}
+                                        <tr>
+                                            <td><strong>{{ record.visit_date }}</strong></td>
+                                            <td>{{ record.diagnosis|truncatewords:12 }}</td>
+                                            <td>Dr. {{ record.doctor.doctor_name }}</td>
+                                            <td>
+                                                <a href="{% url 'record_detail' record.id %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">View Details</a>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4 text-muted">No medical records on file.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<!-- Page Header Banner -->
+<section class="py-5 text-center bg-primary text-white" style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920'); background-size: cover; background-position: center; position: relative;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary" style="opacity: 0.85;"></div>
+    <div class="container py-4 position-relative z-1">
+        <h1 class="display-4 text-white">About MediCare Hospital</h1>
+        <p class="fs-5 opacity-90 col-md-7 mx-auto">Learn about our history, mission, advanced infrastructure, certifications, and our dedicated team of medical professionals.</p>
+    </div>
+</section>
+
+<!-- History & Introduction -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="text-primary fw-bold text-uppercase">OUR BACKGROUND</span>
+                <h2 class="display-6 mt-2 mb-4">Dedicated to Health and Healing Since 2001</h2>
+                <p>Founded over two decades ago, MediCare began as a specialized cardiological care clinic and grew into one of the country's most reputable multi-specialty healthcare networks. Today, we manage over 500 beds, 15 advanced operations theatres, and modern diagnostic laboratories.</p>
+                <p>We combine international medical expertise with advanced engineering systems to provide surgical treatments, therapeutic interventions, and wellness screening to over 100,000 outpatients annually.</p>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1586773860418-d3b9da976c2e?q=80&w=600" class="img-fluid rounded-4 shadow" alt="Hospital Building">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission, Vision & Core Values -->
+<section class="py-5 bg-light">
+    <div class="container py-3">
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-3 shadow-sm border h-100">
+                    <div class="fs-1 text-primary mb-3"><i class="bi bi-bullseye"></i></div>
+                    <h4>Our Mission</h4>
+                    <p class="mb-0 text-muted">To deliver patient-centric, top-tier clinical services focused on safety, healing accuracy, and ethical medical care.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-3 shadow-sm border h-100">
+                    <div class="fs-1 text-primary mb-3"><i class="bi bi-eye-fill"></i></div>
+                    <h4>Our Vision</h4>
+                    <p class="mb-0 text-muted">To become the region's preferred healthcare hub recognized for diagnostic innovation and clinical excellence.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-3 shadow-sm border h-100">
+                    <div class="fs-1 text-primary mb-3"><i class="bi bi-heart-pulse-fill"></i></div>
+                    <h4>Our Core Values</h4>
+                    <p class="mb-0 text-muted">Integrity, Clinical Excellence, Patient Safety, Compassion, Transparency, and Innovation in all procedures.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Infrastructure & Medical Equipment -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="row align-items-center g-5 flex-lg-row-reverse">
+            <div class="col-lg-6">
+                <span class="text-primary fw-bold text-uppercase">INFRASTRUCTURE & TECHNOLOGY</span>
+                <h2 class="display-6 mt-2 mb-4">Advanced Medical Engineering Systems</h2>
+                <p>Our clinics host modern medical infrastructure designed to improve recovery speeds and diagnostic accuracy:</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-start gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1"></i>
+                        <div>
+                            <strong>High-Definition MRI & CT Scans:</strong> Precision imaging for neural, cardiac, and musculoskeletal diagnostics.
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1"></i>
+                        <div>
+                            <strong>Robotic Operation Rooms:</strong> Minimally invasive keyhole surgical facilities for rapid recovery.
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex align-items-start gap-2">
+                        <i class="bi bi-check-circle-fill text-primary mt-1"></i>
+                        <div>
+                            <strong>Automated Pathology:</strong> Automated chemical testing lines to deliver lab reports without delays.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=600" class="img-fluid rounded-4 shadow" alt="Medical scanner">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Awards, Certifications & Achievements -->
+<section class="py-5 bg-light">
+    <div class="container py-3">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase">ACCREDITATIONS</span>
+            <h2 class="display-6 mt-2">Certifications & Awards</h2>
+        </div>
+        <div class="row g-4 text-center justify-content-center">
+            <div class="col-md-3 col-sm-6">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+                    <div class="fs-1 text-warning mb-3"><i class="bi bi-trophy-fill"></i></div>
+                    <h5>JCI Accreditation</h5>
+                    <p class="small text-muted mb-0">Joint Commission International seal for patient safety standards.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+                    <div class="fs-1 text-warning mb-3"><i class="bi bi-award-fill"></i></div>
+                    <h5>NABH Certification</h5>
+                    <p class="small text-muted mb-0">National Accreditation Board for Hospitals & Healthcare standards.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+                    <div class="fs-1 text-warning mb-3"><i class="bi bi-shield-check"></i></div>
+                    <h5>ISO 9001:2015</h5>
+                    <p class="small text-muted mb-0">Certified clinical quality management system implementation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Management & Leadership Team -->
+<section class="py-5 bg-white">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase">LEADERSHIP</span>
+            <h2 class="display-6 mt-2">Our Management Team</h2>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="card card-premium border-0 shadow-sm p-4">
+                    <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=300" class="img-fluid rounded-circle mx-auto mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="CEO">
+                    <h5>Dr. Richard Collins</h5>
+                    <small class="text-primary fw-semibold">Chief Executive Officer</small>
+                    <p class="small text-muted mt-2">Over 20 years of clinical and hospital management operations leadership.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="card card-premium border-0 shadow-sm p-4">
+                    <img src="https://images.unsplash.com/photo-1594824813573-246434de83fb?q=80&w=300" class="img-fluid rounded-circle mx-auto mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="Medical Director">
+                    <h5>Dr. Sarah Jenkins</h5>
+                    <small class="text-primary fw-semibold">Medical Director</small>
+                    <p class="small text-muted mt-2">Directs pediatric research networks and clinical policy strategies.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="card card-premium border-0 shadow-sm p-4">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=300" class="img-fluid rounded-circle mx-auto mb-3" style="width: 150px; height: 150px; object-fit: cover;" alt="CFO">
+                    <h5>Mr. Thomas Vance</h5>
+                    <small class="text-primary fw-semibold">Chief Financial Officer</small>
+                    <p class="small text-muted mt-2">Manages healthcare infrastructure funding and capital strategy budgeting.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hospital Gallery -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold text-uppercase">GALLERY</span>
+            <h2 class="display-6 mt-2">Take a Virtual Tour</h2>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-4 col-sm-6">
+                <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=400" class="img-fluid rounded-3 shadow-sm border" alt="Reception Lobby">
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=400" class="img-fluid rounded-3 shadow-sm border" alt="Operation Theatre">
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <img src="https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?q=80&w=400" class="img-fluid rounded-3 shadow-sm border" alt="Doctor Consultation Room">
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <img src="https://images.unsplash.com/photo-1586773860418-d3b9da976c2e?q=80&w=400" class="img-fluid rounded-3 shadow-sm border" alt="ICU Ward">
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=400" class="img-fluid rounded-3 shadow-sm border" alt="Diagnostics Lab">
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=400" class="img-fluid rounded-3 shadow-sm border" alt="Therapy Gym">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

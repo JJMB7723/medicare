@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Departments | MediCare Hospital Management System{% endblock %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: calc(100vh - 200px);">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <span class="text-primary fw-bold text-uppercase">OUR SPECIALTIES</span>
+                <h1 class="display-6 mt-1 mb-0">Clinical Departments</h1>
+            </div>
+            {% if user.is_authenticated and user.is_admin %}
+                <a href="{% url 'department_add' %}" class="btn btn-primary-custom rounded-pill"><i class="bi bi-plus-circle"></i> Add Department</a>
+            {% endif %}
+        </div>
+
+        <div class="row g-4">
+            {% for dept in departments %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card card-premium h-100 p-4">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="fs-1 text-primary mb-3"><i class="bi bi-hospital"></i></div>
+                            {% if user.is_authenticated and user.is_admin %}
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-link text-muted" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-3">
+                                        <li><a class="dropdown-item py-2" href="{% url 'department_edit' dept.id %}"><i class="bi bi-pencil-square me-2 text-muted"></i> Edit</a></li>
+                                        <li><a class="dropdown-item py-2 text-danger" href="{% url 'department_delete' dept.id %}"><i class="bi bi-trash-fill me-2"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <h4 class="card-title">{{ dept.department_name }}</h4>
+                        <p class="card-text text-muted mt-2 mb-4">{{ dept.department_description }}</p>
+                        <a href="{% url 'doctor_list' %}?department={{ dept.id }}" class="btn btn-sm btn-outline-primary mt-auto rounded-pill py-2">Consult Doctors</a>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">No clinical departments registered yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

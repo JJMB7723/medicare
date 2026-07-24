@@ -14,7 +14,7 @@ class Doctor(models.Model):
     doctor_specialization = models.CharField(max_length=100)
     qualification = models.CharField(max_length=200)
     experience = models.PositiveIntegerField(help_text="Experience in years")
-    doctor_image = models.ImageField(upload_to='doctors/', default='doctors/default.jpg', null=True, blank=True)
+    doctor_image = models.ImageField(upload_to='doctors/', null=True, blank=True)
     phone = models.CharField(max_length=20)
     email = models.EmailField()
     consultation_fee = models.DecimalField(max_digits=10, decimal_places=2)

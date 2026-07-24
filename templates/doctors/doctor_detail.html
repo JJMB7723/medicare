@@ -11,7 +11,7 @@
                 <div class="card border-0 shadow rounded-4 overflow-hidden">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            {% if doctor.doctor_image %}
+                            {% if doctor.doctor_image and doctor.doctor_image.name != 'doctors/default.jpg' %}
                                 <img src="{{ doctor.doctor_image.url }}" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 400px;" alt="Dr. {{ doctor.doctor_name }}">
                             {% else %}
                                 <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=600" class="img-fluid w-100 h-100" style="object-fit: cover; min-height: 400px;" alt="Dr. {{ doctor.doctor_name }}">

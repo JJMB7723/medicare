@@ -277,7 +277,7 @@
             {% for doc in doctors %}
                 <div class="col-lg-3 col-md-6">
                     <div class="card card-premium h-100">
-                        {% if doc.doctor_image %}
+                        {% if doc.doctor_image and doc.doctor_image.name != 'doctors/default.jpg' %}
                             <img src="{{ doc.doctor_image.url }}" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. {{ doc.doctor_name }}">
                         {% else %}
                             <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=400" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Dr. {{ doc.doctor_name }}">

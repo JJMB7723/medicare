@@ -68,21 +68,39 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medicare.wsgi.application'
 
-# Database Setup (using PyMySQL in medicare/__init__.py)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'railway'),
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'ayGofEjzWoBeyiqsekakdFuOrEjjOfhE'),
-        'HOST': os.getenv('DB_HOST', 'sakura.proxy.rlwy.net'),
-        'PORT': int(os.getenv('DB_PORT', 53954)),
-        'OPTIONS': {
+# Database Setup
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
+
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL and dj_database_url:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    db_engine = os.getenv('DB_ENGINE', 'django.db.backends.mysql')
+    DATABASES = {
+        'default': {
+            'ENGINE': db_engine,
+            'NAME': os.getenv('DB_NAME', 'medicare'),
+            'USER': os.getenv('DB_USER', 'root'),
+            'PASSWORD': os.getenv('DB_PASSWORD', '2377'),
+            'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+            'PORT': int(os.getenv('DB_PORT', 3306)),
+        }
+    }
+    if 'mysql' in db_engine:
+        DATABASES['default']['OPTIONS'] = {
             'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
-    }
-}
+
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'

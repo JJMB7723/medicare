@@ -83,6 +83,13 @@ if DATABASE_URL and dj_database_url:
             conn_health_checks=True,
         )
     }
+    if DATABASES['default'].get('ENGINE') == 'django.db.backends.mysql':
+        options = DATABASES['default'].setdefault('OPTIONS', {})
+        if 'ssl-mode' in options:
+            del options['ssl-mode']
+            options['ssl'] = {'ssl': True}
+        options.setdefault('charset', 'utf8mb4')
+        options.setdefault('init_command', "SET sql_mode='STRICT_TRANS_TABLES'")
 else:
     db_engine = os.getenv('DB_ENGINE', 'django.db.backends.mysql')
     DATABASES = {
@@ -100,6 +107,7 @@ else:
             'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
+
 
 
 # Custom User Model
